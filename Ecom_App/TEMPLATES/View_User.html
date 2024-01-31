@@ -1,0 +1,60 @@
+	{% extends 'Base.html'%}
+    {% block content%}
+    {% if messages %}
+        {% for message in messages %}
+         {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+        {% endfor %}
+
+    {% endif %}
+    {%load static%}
+
+
+
+<div style="background-image:  url('/media/BG.jpg'); background-repeat:no-repeat;background-size:cover;  height:687px; width:100%;">
+    <h1 class="H">View User</h1>
+
+
+
+
+<div class="container">
+
+    <table class="table table-dark table-stripped table-hover">
+        <thead>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Address </th>
+            <th>Status </th>
+        </thead>
+
+        <tbody>
+            {%for i in details%}
+            <tr>
+                <td>{{i.id}}</td>
+                <td>{{i.Name}}</td>
+                <td>{{i.Age}}</td>
+                <td>{{i.Phone}}</td>
+                <td>{{i.Email}}</td>
+                <td>{{i.Address}}</td>
+                {%if i.Status == 'Pending'%}
+                <td> <a href="/Update_Status/{{i.id}}" class="btn btn-secondary">Accept</a> </td>
+                {%else%}
+                <td>{{i.Status}}</td>
+                {%endif%}
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+    
+</div>
+
+
+</div>
+
+
+
+
+{%endblock%}

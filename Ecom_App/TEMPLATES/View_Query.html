@@ -1,0 +1,62 @@
+	{% extends 'Base.html'%}
+    {% block content%}
+    {% if messages %}
+        {% for message in messages %}
+         {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+        {% endfor %}
+
+    {% endif %}
+    {%load static%}
+
+
+
+<div style="background-image:  url('/media/BG.jpg'); background-repeat:no-repeat;background-size:cover;  height:687px; width:100%;">
+    <h1 class="H">View Query</h1>
+
+
+
+    <div class="container">
+        <table class="table table-warning table-stripped table-hover">
+            <thead>
+                <th>ID</th>
+                <th>User Id</th>
+                <th>Query</th>
+                <th>Answer</th>
+                <th>Reply</th>
+            </thead>
+
+            <tbody>
+                {%for i in details%}
+                <tr>
+                    <td>{{i.id}}</td>
+                    <td>{{i.User_id}}</td>
+                    <td>{{i.Query}}</td>
+                    <td>{{i.Answer}}</td>
+                    <td>
+                        <div class="row">
+                            <form method="POST" action="/Answer/" enctype="multipart/form-data">
+                                 {% csrf_token %}
+                                <div class="col-md-12">
+                                    <input hidden type="text" value="{{i.id}}" name="query_id">
+                                    <textarea name="answer" class="form-control"></textarea>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="submit" class="btn btn-secondary" name="">
+                                </div>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+
+
+</div>
+
+
+
+
+{%endblock%}

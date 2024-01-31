@@ -1,0 +1,172 @@
+{% extends 'Base.html'%}
+{% block content%}
+{% if messages %}
+
+{% for message in messages %}
+{% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+{% endfor %}
+
+{% endif %}
+{%load static%}
+{% if  request.session.type_id == 'Admin' %}
+<div class="container" style="padding-top:20px;">
+    <div style="display:flex; justify-content: right;align-items: right;">
+        <a  class="btn btn-info" href="/Add_Product/">ADD PRODUCT</a>
+    </div>
+
+</div>
+{%endif%}
+
+{% if  request.session.type_id == 'User' %}
+<div  class="container" style="padding-top:20px;">
+    <div style="display:flex; justify-content: right;align-items: right;">
+        
+    </div>
+
+</div>
+{%endif%}
+
+<!-- Modal for view button -->
+<!-- View Modal -->
+<div class="modal fade" id="myModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Farmer Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+             <div class="container">
+        <div class="row" >
+           <form action="/Update_Product/" method="POST" enctype="multipart/form-data">
+            {%csrf_token%}
+                <div class="mb-3">
+                <label for="formGroupExampleInput" class="form-label">Product ID</label>
+                <input type="text" class="form-control" name="updateid"  id="updateid" readonly >
+            </div>
+
+             <div class="mb-3">
+                <label for="formGroupExampleInput" class="form-label">Product Name</label>
+                <input type="text" class="form-control" name="updatename"  id="updatename" >
+            </div>
+
+                 <div class="mb-3">
+                <label for="formGroupExampleInput" class="form-label"> Image</label>
+                <img src="" id="updateimage" style="height: 250px;width: 250px;margin-left: 50px">
+            </div>
+
+            <div class="mb-3">
+             <div class="col-md-12" >
+            
+                
+                
+                     <!-- <p><input type="file"  accept="image/*" name="image" id="file"  onchange="image(event)" style="display: none;"></p>
+                <p><label class="form-control" style="border:outset;cursor: pointer;" for="file" >Upload Image</label></p>
+                <p><img style="background-color: white;" name="image" id="outputimg" height="200" width="200" /></p> -->
+
+
+                <input type="file" accept="image/*" name="image" id="file" class="form-control">
+                
+               
+            </div>
+            </div>
+             <div class="mb-3">
+                <label for="formGroupExampleInput" class="form-label">Product Price</label>
+                <input type="text" class="form-control" name="updatestate"  id="updatestate" >
+            </div>
+
+            <div class="mb-3">
+                <input type="submit" class="btn btn-success" value="ADD">
+            </div>
+           </form>
+        </div>
+    </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<!-- ------------------------------------------------------------------------------------------------------------- -->
+
+<div class="container">
+    <div class="row">
+        {%for i in data%}
+
+            <div class="col-4"  style="border: solid 2px;background-color:rgba(255,253,208,0.7);border-radius: 5px;width: 30%;">
+                <br>
+                <img class="thumbnail" src="{{i.Product_Image.url}}" style="height:250px;width:370px;">
+                <div class="box-element product">
+                    <input type="text" name="id" value="{{i.id}}" hidden="">
+                    <h6><strong>{{i.Product_Name}}</strong></h6>
+                    <hr>
+                    <span><a class="btn btn-outline-success" href="/ViewProduct/{{i.id}}">View</a></span>
+                    {% if  request.session.type_id == 'Admin' %}
+                    <span> <a class="btn btn-outline-danger" href="/Delete_Product/{{i.id}}">Delete</a></span>
+                    <span> <input type="button" class="btn btn-outline-info "id=" {{i.id}}
+                            ${{i.Product_Name}}
+                            ${{i.Product_Image.url}}$
+                            {{i.Product_Price}}"
+                             value="Update" onclick="Update(this)"></span>
+                    <span> <a class="btn btn-outline-secondary" href="/Show_Plot/{{i.id}}">Show Plot</a></span>
+                    {%endif%}
+                    <h4 style="display: inline-block; float: right"><strong>₹{{ i.Product_Price }}</strong></h4>
+                </div>
+                <br>
+            </div>
+                &nbsp;
+
+            {% endfor %}
+            &nbsp;
+    </div>
+</div>
+
+
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript">
+
+    function Update(me){
+        $('#myModal1').modal('show');
+        var id                  = me.id;
+        var str                 = id.split("$");
+        var ids                 = str[0];
+        var Name                = str[1];
+        var Image               = str[2];
+        var Price         = str[3];
+        
+        console.log(Image)
+      
+       
+
+        document.getElementById("updateid").value       = ids;
+        document.getElementById("updatename").value     = Name;
+        document.getElementById("updateimage").src      = Image;
+        document.getElementById("updatestate").value    = Price;
+        
+        
+        
+    }
+
+
+
+
+
+var loadFile = function(event) {
+    var image = document.getElementById('output');
+    image.src = URL.createObjectURL(event.target.files[0]);
+};
+
+
+var image = function(event) {
+    var image = document.getElementById('outputimg');
+    image.src = URL.createObjectURL(event.target.files[0]);
+};
+
+
+
+
+
+    </script>
+{%endblock%}

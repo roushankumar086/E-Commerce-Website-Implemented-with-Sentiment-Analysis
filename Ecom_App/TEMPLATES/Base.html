@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Ecommerce</title>
+
+	<!-- Bootstrap javascript link -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+     <!-- bootstrap Script File -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+<style>
+	
+  .navbar-expand-lg .navbar-nav .nav-link:hover {
+    background-color: #8e8baf; /* Set the background color to black on hover */
+  }
+
+  .navbar-brand{
+  	font-size: 30px;
+  }
+ 
+ @import url('https://fonts.googleapis.com/css2?family=PT+Sans&family=Poppins:wght@300&family=Quicksand&display=swap');
+
+ body {
+ 	font-family: 'Poppins', sans-serif;
+font-family: 'PT Sans', sans-serif;
+font-family: 'Quicksand', sans-serif;
+ }
+
+  
+</style>
+</head>
+<body style="background-color: lightslategray;">
+
+	<nav style="background-color: #CFE3E2;" class="navbar navbar-expand-lg ">
+  <div class="container-fluid">
+    <img src="/media/sentiment-analysis.png" height="60"><a class="navbar-brand" href="#">Sentiment Analysis System</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul  class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'Home'%}">Home</a>
+        </li>
+
+         				{% if  request.session.type_id == 'Admin' %}
+         				<li  class="nav-item">
+                            <a href="/Manage_Product/" class="nav-link">Manage Products</a>
+                        </li>
+
+                        <li  class="nav-item">
+                            <a href="/View_User/" class="nav-link">View User</a>
+                        </li>
+
+                        <li  class="nav-item">
+                            <a href="/View_Order/" class="nav-link">View Order</a>
+                        </li>
+
+                        <li  class="nav-item">
+                            <a href="/View_Query/" class="nav-link">View Query</a>
+                        </li>
+                     
+                        {% elif request.session.type_id == 'User' %}
+                        <li  class="nav-item">
+                            <a href="/Manage_Product/" class="nav-link">Products</a>
+                        </li>
+                        <li  class="nav-item">
+                            <a href="/Track_Order/" class="nav-link">Track Order</a>
+                        </li>
+                        <li  class="nav-item">
+                            <a href="/Ask_Queries/" class="nav-link">Ask_Queries</a>
+                        </li>
+                        {%endif%}
+        
+      </ul>
+       <form style="padding-right:100px;" class="d-flex" role="search">
+        {% if  request.session.login == 'Yes' %}
+         <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class = "nav-link active" >Hi, {{request.session.UserType}}</a></li>
+        <li class="nav-item"><a class = "nav-link active" href="{% url 'Logout'%}" >LogOut</a></li>
+        </ul>
+        {% else %}    
+         
+       <li style="list-style-type: none;padding-right: 40px;" class="nav-item dropdown">
+          <a   class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Login
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/User_Login/">User</a></li>
+            <li><a class="dropdown-item" href="/Admin_Login/">Admin</a></li>
+          </ul>
+        </li>
+        {% endif %}
+      </form>
+    </div>
+  </div>
+</nav>
+
+ {% block content %}
+
+{% endblock %}
+
+
+
+
+</body>
+</html>
